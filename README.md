@@ -11,6 +11,7 @@ it takes data from website and it puts it into the database, u can check todays 
 
 
 chose city: ![ScreenShot](https://github.com/konswe/weather-scrapper/blob/main/images/choseCity.PNG)
+write what city you want: ![ScreenShot](https://github.com/konswe/weather-scrapper/blob/main/images/chose.PNG)
 
 
 
