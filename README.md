@@ -10,9 +10,9 @@
 it takes data from website and it puts it into the database, u can check todays weather (i will change it so you can check any weather from any date), all is saved in database
 
 
-###chose city: 
+### chose city: 
 ![ScreenShot](https://github.com/konswe/weather-scrapper/blob/main/images/choseCity.PNG) 
-###write what city you want: 
+### write what city you want: 
 ![ScreenShot](https://github.com/konswe/weather-scrapper/blob/main/images/chose.PNG)
 
 
