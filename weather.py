@@ -4,26 +4,16 @@ import pymysql
 connection = pymysql.connect(host="localhost", user="root", passwd="", database="weather")
 cursor = connection.cursor()
 
-city = "katoddwice"
-weather = "19C"
-date = "9929-12-31"
-
-# queries for inserting values
-insert1 = ("INSERT INTO weather_database(City, Weather, Date) " 
-          "VALUES (%(city)s,%(weather)s,%(date)s)")
-
-
-data_weather = {
-  'city': city,
-  'weather': weather,
-  'date': date,
-}
-
+# queries for retrievint all rows
+retrive = "SELECT Date FROM `weather_database` ORDER BY `weather_database`.`Date` DESC"
 
 #executing the quires
-cursor.execute(insert1, data_weather)
+cursor.execute(retrive)
+lastDate = cursor.fetchall()[0]
+lastDate = lastDate[0].strftime('20%y-%m-%d')
+print(lastDate)
+
 
 
 #commiting the connection then closing it.
 connection.commit()
-connection.close()
