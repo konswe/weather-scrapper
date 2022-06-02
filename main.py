@@ -3,48 +3,51 @@ import requests
 import pymysql
 from datetime import date
 
+# site from which im taking data
 url = "https://pogoda.interia.pl/"
 
+# today's date
 date = date.today().strftime("%Y-%m-%d")
 
 result = requests.get(url)
 doc = BeautifulSoup(result.text, "html.parser")
-print ("Choose a place and find out what the temperature is there: ")
-x=0
+
+print("Choose a place and find out what the temperature is there: ")
+x = 0
+
+# arrays with data
 cities = []
 weathers = []
 
-
-#database connection
+# database connection
 connection = pymysql.connect(host="localhost", user="root", passwd="", database="weather")
 cursor = connection.cursor()
 
 # queries for retrievint last date
 retrive = "SELECT Date FROM `weather_database` ORDER BY `weather_database`.`Date` DESC"
 
-#initiating date its required if there is no last date
+# initiating date its required if there is no last date
 lastDate = "1700-01-01"
 
-#executing the quires
+# executing the quires
 cursor.execute(retrive)
-#checks if there is anything in the database
+
+# checks if there is anything in the database
 if cursor.execute(retrive) != 0:
     lastDate = cursor.fetchall()[0]
     lastDate = lastDate[0].strftime('20%y-%m-%d')
 
-
-
-while x<23:
+while x < 23:
     city = doc.find_all("a", {"class": "weather-index-item-name saveCityInCookie"})[x]
     weather = doc.find_all("span", {"class": "weather-index-item-temp"})[x]
 
-    #making data more readable
+    # making data more readable
     cityStrip = city.string.strip()
     weatherToArray = weather.string
 
-    #this if is becouse we dont want thisame data in database
+    # this if is because we dont want thisame data in database
     if lastDate != date:
-        #SQL
+        # SQL
         insert1 = ("INSERT INTO weather_database(City, Weather, Date) "
                    "VALUES (%(city)s,%(weather)s,%(date)s)")
 
@@ -59,25 +62,23 @@ while x<23:
 
     cities.append(cityStrip)
     weathers.append(weatherToArray)
-    print(city.string.strip()," ", end = '')
-    x=x+1
+    print(city.string.strip(), " ", end='')
+    x = x + 1
 
-#ending SQL connection and commiting changes
+# ending SQL connection and commiting changes
 connection.commit()
 connection.close()
 
+# down here is section for displaying the weather
+
+# input what city you want to check
 print("")
 whatCity = input()
 
-x=0
+x = 0
 
-#printing out weather of the city input
-while(x<23):
-    if(whatCity.lower()==cities[x].lower()):
+# printing out weather of the city input
+while x < 23:
+    if whatCity.lower() == cities[x].lower():
         print(cities[x], weathers[x])
-    x=x+1
-
-
-
-
-
+    x = x + 1
